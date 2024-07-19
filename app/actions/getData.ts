@@ -1,21 +1,43 @@
 "use server";
-import * as cheerio from "cheerio";
+import { kv } from "@vercel/kv";
+import scrapeData from "../utils/scrapeData";
+import { StoredData } from "../types";
+
+// refresh every 5 minutes
+const REFRESH_INTERVAL = 1000 * 60 * 5;
+
+async function refreshData({ now, project }: { now:Date, project: string }) {
+  const data = await scrapeData({ project });
+  const storedData:StoredData = {
+    ...data,
+    time: now.toISOString()
+  }
+  await kv.set(project, storedData);
+  return data;
+}
 
 export default async function getData({ project }: { project: string }) {
   if (!project) throw Error("project is required");
-  const url = `https://www.duurzaaminvesteren.nl/projecten/${project}`;
-  const response = await fetch(url);
-  const body = await response.text();
+  console.log("getData for project: ", project);
 
-  const $ = cheerio.load(body);
+  const now = new Date();
+  const storedData = await kv.get(project) as StoredData;
 
-  const dtElement = $("dt:contains('Tot nu toe geïnvesteerd')");
-  const ddElement = dtElement.next();
-  const fundedElement = ddElement.children().first();
-  const fundedRaw = fundedElement.text();
-  const funded = parseInt(fundedRaw.replace(/[^0-9]/g, ""));
+  if(!storedData) {
+    console.log("  No stored data found");
+    return await refreshData({ now, project });
+  }
 
-  return {
-    funded,
-  };
+  const storedTime = new Date(storedData.time);
+  const diffTime = now.valueOf() - storedTime.valueOf();
+  console.log("  diffTime: ", diffTime);
+
+  if(diffTime > REFRESH_INTERVAL) {
+    console.log("  Data is older than 5 minutes");
+    return await refreshData({ now, project });
+  }
+
+  console.log("  return existing data");
+  const {time, ...data} = storedData;
+  return data;
 }

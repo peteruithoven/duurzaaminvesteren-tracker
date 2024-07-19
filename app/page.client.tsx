@@ -28,8 +28,8 @@ export default function ClientPage() {
       }
       setFunded(data.funded);
     },
-    // keep refreshing every 5 minutes
-    1000 * 60 * 5
+    // keep refreshing every minute
+    1000 * 60
   );
 
   if (!project || !funded) return null;
