@@ -49,5 +49,5 @@ export default function ClientPage() {
     return null;
   }
 
-  return <Card label="Tot nu toe geïnvesteerd" value={formatMoney(funded)} />;
+  return <Card label="Invested so far" value={formatMoney(funded)} />;
 }
