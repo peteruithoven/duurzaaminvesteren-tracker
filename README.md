@@ -2,7 +2,7 @@
 
 ## Demo
 
-https://duurzaaminvesteren-tracker.vercel.app?project=demo
+https://duurzaaminvesteren-tracker.vercel.app/p/demo
 
 ## Getting Started
 
@@ -14,7 +14,7 @@ https://duurzaaminvesteren-tracker.vercel.app?project=demo
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000) with your browser.
+3. Open [http://localhost:3000/p/demo](http://localhost:3000/p/demo) with your browser.
 
-4. Make sure to add the project url parameter, filled with either `demo` or the project-slug from duurzaaminvesteren.nl, see:  
-   `https://www.duurzaaminvesteren.nl/projecten/{project-slug}`
+4. Optionally replace the demo project with the project from duurzaaminvesteren.nl, see:  
+   `https://www.duurzaaminvesteren.nl/projecten/{project}`

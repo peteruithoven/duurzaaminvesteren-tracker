@@ -1,19 +1,17 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import getData from "./actions/getData";
-import useProject from "./useProject";
-import useTimeout from "./utils/useTimeout";
-import formatMoney from "./utils/formatMoney";
-import InvestedCard from "./components/InvestedCard";
-import ProgressCard from "./components/ProgressCard";
-import { Data } from "./types";
-import Party from "./components/icons/Party";
+import getData from "../../actions/getData";
+import useTimeout from "../../utils/useTimeout";
+import formatMoney from "../../utils/formatMoney";
+import InvestedCard from "../../components/InvestedCard";
+import ProgressCard from "../../components/ProgressCard";
+import { Data } from "../../types";
+import Party from "../../components/icons/Party";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
-export default function ClientPage() {
-  const { project } = useProject();
+export default function ClientPage({ project }: { project: string }) {
   const [data, setData] = useState<Data | null>(null);
   const [prevData, setPrevData] = useState<Data | null>(null);
 
