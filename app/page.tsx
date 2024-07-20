@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import ClientPage from "./page.client";
+import { Toaster } from "react-hot-toast";
 
 export default function Home() {
   return (
@@ -7,6 +8,7 @@ export default function Home() {
       <Suspense>
         <ClientPage />
       </Suspense>
+      <Toaster />
     </main>
   );
 }
