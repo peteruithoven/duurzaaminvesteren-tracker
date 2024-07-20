@@ -26,9 +26,10 @@ export default async function scrapeData({
 }
 
 function scrapeFunded($: cheerio.CheerioAPI): number {
-  const dtElement = $("dt:contains('Tot nu toe geïnvesteerd')");
-  const ddElement = dtElement.next();
-  const fundedElement = ddElement.children().first();
+  const soFarElement = $("dt:contains('Tot nu toe geïnvesteerd')");
+  const totalElement = $("dt:contains('Totaal geïnvesteerd')");
+  const startElement = soFarElement.length > 0 ? soFarElement : totalElement;
+  const fundedElement = startElement.next().children().first();
   const fundedRaw = fundedElement.text();
   const funded = parseInt(fundedRaw.replace(/[^0-9]/g, ""));
   return funded;
