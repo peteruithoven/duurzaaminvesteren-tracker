@@ -1,27 +1,33 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import getData from "./actions/getData";
 import useProject from "./useProject";
 import useTimeout from "./utils/useTimeout";
 import formatMoney from "./utils/formatMoney";
-import Card from "./components/Card";
+import InvestedCard from "./components/InvestedCard";
+import ProgressCard from "./components/ProgressCard";
+import { Data } from "./types";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
 export default function ClientPage() {
   const { project } = useProject();
-  const [prevFunded, setPrevFunded] = useState<number | null>(null);
-  const [funded, setFunded] = useState<number | null>(null);
+  const [data, setData] = useState<Data | null>(null);
+  const [prevData, setPrevData] = useState<Data | null>(null);
+
+  const funded = useMemo(() => data?.funded, [data]);
+  const prevFunded = useMemo(() => prevData?.funded, [prevData]);
+
   const isDemo = project === "demo";
 
   useEffect(() => {
-    if (funded === null || prevFunded === null || funded <= prevFunded) return;
-    console.log("New investor!");
-    const diff = funded - prevFunded;
-    toast.success(`New investor! +${formatMoney(diff)}`, {
+    if (funded == undefined || prevFunded == undefined) return;
+    const additionalFunding = funded - prevFunded;
+    if (additionalFunding <= 0) return;
+    toast.success(`New investor! +${formatMoney(additionalFunding)}`, {
       duration: 1000 * 60,
-      position: "top-right",
+      position: "bottom-right",
     });
     try {
       const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
@@ -29,14 +35,14 @@ export default function ClientPage() {
     } catch (e) {
       console.error(e);
     }
-  }, [prevFunded, funded]);
+  }, [funded, prevFunded]);
 
   useTimeout(
     async () => {
       if (!project) return;
-      const data = await getData({ project });
-      setPrevFunded(funded);
-      setFunded(data.funded);
+      const newData = await getData({ project });
+      setPrevData(data);
+      setData(newData);
     },
     isDemo
       ? // refresh every 10 seconds for demo
@@ -49,9 +55,25 @@ export default function ClientPage() {
     return <div>No project specified</div>;
   }
 
-  if (funded === null) {
+  if (data === null) {
     return null;
   }
 
-  return <Card label="Invested so far" value={formatMoney(funded)} />;
+  return (
+    <>
+      <InvestedCard label="Invested so far" value={formatMoney(data.funded)} />
+      <ProgressCard
+        strokeDasharray={data.minStrokeDasharray}
+        percentage={data.minProgress}
+        label="Progress minimum amount"
+        value={formatMoney(data.minAmount)}
+      />
+      <ProgressCard
+        strokeDasharray={data.targetStrokeDasharray}
+        percentage={data.targetProgress}
+        label="Progress target amount"
+        value={formatMoney(data.targetAmount)}
+      />
+    </>
+  );
 }

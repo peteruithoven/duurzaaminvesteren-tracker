@@ -1,6 +1,6 @@
 import Flag from "./icons/Flag";
 
-export default function Card({
+export default function InvestedCard({
   label,
   value,
 }: {
@@ -8,8 +8,8 @@ export default function Card({
   value: string;
 }) {
   return (
-    <div className="relative flex flex-col justify-center items-center bg-green-100 text-green-700 aspect-square rounded p-5 ">
-      <dt className="flex flex-col justify-center items-center gap-2 text-center">
+    <div className="relative flex aspect-square flex-1 flex-col items-center justify-center rounded bg-green-100 p-5 text-green-700">
+      <dt className="flex flex-col items-center justify-center gap-2 text-center">
         <Flag />
         {label}
       </dt>

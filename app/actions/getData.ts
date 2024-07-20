@@ -2,6 +2,7 @@
 import { kv } from "@vercel/kv";
 import scrapeData from "../utils/scrapeData";
 import { DBData } from "../types";
+import formatPercentage from "../utils/formatPercentage";
 
 // refresh every 5 minutes
 const REFRESH_INTERVAL = 1000 * 60 * 5;
@@ -38,11 +39,7 @@ export default async function getData({ project }: { project: string }) {
 
   if (shouldRefresh({ now, dbData, isDemo })) {
     console.log("  refresh data");
-    const data = isDemo
-      ? {
-          funded: dbData?.funded < 100000 ? dbData?.funded + 100 : 0,
-        }
-      : await scrapeData({ project });
+    const data = isDemo ? getDemoData(dbData) : await scrapeData({ project });
     const newDBData: DBData = {
       ...data,
       time: now.toISOString(),
@@ -54,4 +51,27 @@ export default async function getData({ project }: { project: string }) {
   console.log("  return existing data");
   const { time, ...data } = dbData;
   return data;
+}
+
+function getDemoData({ funded = 0 }: { funded: number }) {
+  const newFunded = funded < 100000 ? funded + 100 : 0;
+  const minAmount = 25000;
+  const minProgress = Math.min(newFunded / minAmount, 1);
+  const targetAmount = 100000;
+  const targetProgress = Math.min(newFunded / targetAmount, 1);
+  return {
+    funded: newFunded,
+    minAmount,
+    minProgress: formatPercentage(minProgress),
+    minStrokeDasharray: getDemoStrokeDasharray(minProgress),
+    targetAmount,
+    targetProgress: formatPercentage(targetProgress),
+    targetStrokeDasharray: getDemoStrokeDasharray(targetProgress),
+  };
+}
+
+function getDemoStrokeDasharray(percentage: number) {
+  const total = 216.77;
+  const start = total * percentage;
+  return `${start} ${total}`;
 }
