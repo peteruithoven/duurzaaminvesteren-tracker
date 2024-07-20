@@ -32,7 +32,13 @@ export default function ClientPage() {
     1000 * 60
   );
 
-  if (!project || !funded) return null;
+  if (!project) {
+    return <div>No project specified</div>;
+  }
+
+  if (funded === null) {
+    return null;
+  }
 
   return <Card label="Tot nu toe geïnvesteerd" value={formatMoney(funded)} />;
 }
