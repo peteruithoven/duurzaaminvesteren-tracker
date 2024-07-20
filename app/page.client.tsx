@@ -30,7 +30,7 @@ export default function ClientPage() {
       <div className="flex gap-2 rounded-lg bg-green-700 p-4 text-white shadow-lg">
         <Party />
         New investor!
-        <strong className="font-bold">{formatMoney(666)}</strong>
+        <strong className="font-bold">{formatMoney(additionalFunding)}</strong>
       </div>,
       {
         duration: 1000 * 60,
