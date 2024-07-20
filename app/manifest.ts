@@ -5,7 +5,6 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Duurzaaminvesteren.nl tracker",
     short_name: "Duurzaaminvesteren.nl tracker",
     description: "Keep an eye on your project on Duurzaaminvesteren.nl",
-    start_url: "/",
     display: "standalone",
     background_color: "#fff",
     theme_color: "#f5fcf9",
