@@ -3,7 +3,7 @@ import { Montserrat } from "next/font/google";
 import type { Metadata } from "next";
 import "./globals.css";
 
-const font = Montserrat({ subsets: ["latin"] });
+const font = Montserrat({ subsets: ["latin"], variable: "--font-montserrat" });
 
 export const metadata: Metadata = {
   title: "Duurzaaminvesteren.nl tracker",
@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={[font.variable, "font-sans"].join(" ")}>
         {children}
         <Analytics />
       </body>

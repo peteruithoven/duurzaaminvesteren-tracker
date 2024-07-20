@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-montserrat)"],
+      },
       colors: {
         green: {
           100: "rgb(245 252 249)",
