@@ -4,10 +4,12 @@ import { Toaster } from "react-hot-toast";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center bg-white p-24 pb-10 text-gray-800">
-      <Suspense>
-        <ClientPage />
-      </Suspense>
+    <main className="flex min-h-screen flex-col items-center bg-green-100 p-24 pb-10 text-green-700 antialiased">
+      <div className="shadow-3xl rounded-lg bg-white p-4 lg:px-5">
+        <Suspense>
+          <ClientPage />
+        </Suspense>
+      </div>
       <Toaster />
     </main>
   );
