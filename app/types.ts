@@ -2,6 +2,6 @@ export type Data = {
   funded: number;
 }
 
-export type StoredData = Data & {
+export type DBData = Data & {
   time: string;
 }

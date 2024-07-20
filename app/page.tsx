@@ -3,7 +3,7 @@ import ClientPage from "./page.client";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center p-24  bg-white pb-10">
+    <main className="flex min-h-screen flex-col items-center bg-white p-24 pb-10 text-gray-800">
       <Suspense>
         <ClientPage />
       </Suspense>

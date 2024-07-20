@@ -1,19 +1,20 @@
 "use server";
 import { kv } from "@vercel/kv";
 import scrapeData from "../utils/scrapeData";
-import { StoredData } from "../types";
+import { DBData } from "../types";
 
 // refresh every 5 minutes
 const REFRESH_INTERVAL = 1000 * 60 * 5;
 
-async function refreshData({ now, project }: { now:Date, project: string }) {
-  const data = await scrapeData({ project });
-  const storedData:StoredData = {
-    ...data,
-    time: now.toISOString()
-  }
-  await kv.set(project, storedData);
-  return data;
+function shouldRefresh({ now, dbData }: { now: Date; dbData: DBData }) {
+  if (!dbData) return true;
+
+  const storedTime = new Date(dbData.time);
+  const diffTime = now.valueOf() - storedTime.valueOf();
+  console.log("  diffTime: ", diffTime);
+  if (diffTime > REFRESH_INTERVAL) return true;
+
+  return false;
 }
 
 export default async function getData({ project }: { project: string }) {
@@ -21,23 +22,25 @@ export default async function getData({ project }: { project: string }) {
   console.log("getData for project: ", project);
 
   const now = new Date();
-  const storedData = await kv.get(project) as StoredData;
+  const dbData = (await kv.get(project)) as DBData;
 
-  if(!storedData) {
-    console.log("  No stored data found");
-    return await refreshData({ now, project });
-  }
-
-  const storedTime = new Date(storedData.time);
-  const diffTime = now.valueOf() - storedTime.valueOf();
-  console.log("  diffTime: ", diffTime);
-
-  if(diffTime > REFRESH_INTERVAL) {
-    console.log("  Data is older than 5 minutes");
-    return await refreshData({ now, project });
+  if (shouldRefresh({ now, dbData })) {
+    console.log("  refresh data");
+    const data =
+      project === "demo"
+        ? {
+            funded: dbData?.funded < 100000 ? dbData?.funded + 100 : 0,
+          }
+        : await scrapeData({ project });
+    const newDBData: DBData = {
+      ...data,
+      time: now.toISOString(),
+    };
+    await kv.set(project, newDBData);
+    return data;
   }
 
   console.log("  return existing data");
-  const {time, ...data} = storedData;
+  const { time, ...data } = dbData;
   return data;
 }
