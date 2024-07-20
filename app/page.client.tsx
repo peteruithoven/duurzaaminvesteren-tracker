@@ -8,6 +8,7 @@ import formatMoney from "./utils/formatMoney";
 import InvestedCard from "./components/InvestedCard";
 import ProgressCard from "./components/ProgressCard";
 import { Data } from "./types";
+import Party from "./components/icons/Party";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -25,10 +26,17 @@ export default function ClientPage() {
     if (funded == undefined || prevFunded == undefined) return;
     const additionalFunding = funded - prevFunded;
     if (additionalFunding <= 0) return;
-    toast.success(`New investor! +${formatMoney(additionalFunding)}`, {
-      duration: 1000 * 60,
-      position: "bottom-right",
-    });
+    toast.custom(
+      <div className="flex gap-2 rounded-lg bg-green-700 p-4 text-white shadow-lg">
+        <Party />
+        New investor!
+        <strong className="font-bold">{formatMoney(666)}</strong>
+      </div>,
+      {
+        duration: 1000 * 60,
+        position: "bottom-right",
+      },
+    );
     try {
       const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
       newBackerAudio.play();
