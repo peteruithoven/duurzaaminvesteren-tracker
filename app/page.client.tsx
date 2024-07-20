@@ -16,7 +16,7 @@ export default function ClientPage() {
     async () => {
       if (!project) return;
       const data = await getData({ project });
-
+      setFunded(data.funded);
       if (funded !== null && data.funded > funded) {
         console.log("new backer!");
         try {
@@ -26,10 +26,9 @@ export default function ClientPage() {
           console.error(e);
         }
       }
-      setFunded(data.funded);
     },
     // keep refreshing every minute
-    1000 * 60
+    1000 * 60,
   );
 
   if (!project) {
