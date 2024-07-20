@@ -5,14 +5,25 @@ import { DBData } from "../types";
 
 // refresh every 5 minutes
 const REFRESH_INTERVAL = 1000 * 60 * 5;
+// refresh every 30 seconds for demo
+const REFRESH_INTERVAL_DEMO = 1000 * 30;
 
-function shouldRefresh({ now, dbData }: { now: Date; dbData: DBData }) {
+function shouldRefresh({
+  now,
+  dbData,
+  isDemo,
+}: {
+  now: Date;
+  dbData: DBData;
+  isDemo: boolean;
+}) {
   if (!dbData) return true;
 
   const storedTime = new Date(dbData.time);
   const diffTime = now.valueOf() - storedTime.valueOf();
   console.log("  diffTime: ", diffTime);
-  if (diffTime > REFRESH_INTERVAL) return true;
+  const refreshInterval = isDemo ? REFRESH_INTERVAL_DEMO : REFRESH_INTERVAL;
+  if (diffTime > refreshInterval) return true;
 
   return false;
 }
@@ -23,15 +34,15 @@ export default async function getData({ project }: { project: string }) {
 
   const now = new Date();
   const dbData = (await kv.get(project)) as DBData;
+  const isDemo = project === "demo";
 
-  if (shouldRefresh({ now, dbData })) {
+  if (shouldRefresh({ now, dbData, isDemo })) {
     console.log("  refresh data");
-    const data =
-      project === "demo"
-        ? {
-            funded: dbData?.funded < 100000 ? dbData?.funded + 100 : 0,
-          }
-        : await scrapeData({ project });
+    const data = isDemo
+      ? {
+          funded: dbData?.funded < 100000 ? dbData?.funded + 100 : 0,
+        }
+      : await scrapeData({ project });
     const newDBData: DBData = {
       ...data,
       time: now.toISOString(),

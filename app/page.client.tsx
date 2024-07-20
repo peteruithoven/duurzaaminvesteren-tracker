@@ -13,6 +13,7 @@ export default function ClientPage() {
   const { project } = useProject();
   const [prevFunded, setPrevFunded] = useState<number | null>(null);
   const [funded, setFunded] = useState<number | null>(null);
+  const isDemo = project === "demo";
 
   useEffect(() => {
     if (funded === null || prevFunded === null || funded <= prevFunded) return;
@@ -37,8 +38,11 @@ export default function ClientPage() {
       setPrevFunded(funded);
       setFunded(data.funded);
     },
-    // keep refreshing every minute
-    1000 * 60,
+    isDemo
+      ? // refresh every 10 seconds for demo
+        1000 * 10
+      : // refresh every 1 minute normally
+        1000 * 60,
   );
 
   if (!project) {
