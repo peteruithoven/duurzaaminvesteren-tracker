@@ -6,16 +6,12 @@ export default function useWakeLock() {
     try {
       const wakeLock = await navigator.wakeLock.request("screen");
       setWakeLock(wakeLock);
-      console.log("Wake Lock active");
-      alert("Wake Lock active");
     } catch (err) {
-      console.error("Wake Lock couldn't be activated", err);
-      alert("Wake Lock couldn't be activated");
+      console.log("Wake Lock couldn't be activated", err);
     }
   }, []);
 
   const visibilityChangeHandler = useCallback(async () => {
-    console.log("visibilityChange:", document.visibilityState);
     if (wakeLock !== null && document.visibilityState === "visible") {
       requestWakeLock();
     }
