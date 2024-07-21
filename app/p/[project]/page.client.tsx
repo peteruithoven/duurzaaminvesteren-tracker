@@ -48,9 +48,13 @@ export default function ClientPage({ project }: { project: string }) {
   useTimeout(
     async () => {
       if (!project) return;
-      const newData = await getData({ project });
-      setPrevData(data);
-      setData(newData);
+      try {
+        const newData = await getData({ project });
+        setPrevData(data);
+        setData(newData);
+      } catch (err) {
+        console.error(err);
+      }
     },
     isDemo
       ? // refresh every 10 seconds for demo
