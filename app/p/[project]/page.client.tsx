@@ -8,10 +8,12 @@ import InvestedCard from "../../components/InvestedCard";
 import ProgressCard from "../../components/ProgressCard";
 import { Data } from "../../types";
 import Party from "../../components/icons/Party";
+import useWakeLock from "@/app/utils/useWakeLock";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
 export default function ClientPage({ project }: { project: string }) {
+  useWakeLock();
   const [data, setData] = useState<Data | null>(null);
   const [prevData, setPrevData] = useState<Data | null>(null);
 
