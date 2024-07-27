@@ -6,7 +6,13 @@ function randomInRange(min: number, max: number) {
 
 export default function fireworks(duration: number) {
   const animationEnd = Date.now() + duration;
-  const defaults = { startVelocity: 30, spread: 360, ticks: 100, zIndex: 0 };
+  const defaults = {
+    startVelocity: 30,
+    spread: 360,
+    ticks: 100,
+    zIndex: 0,
+    disableForReducedMotion: true,
+  };
 
   const interval = setInterval(function () {
     const timeLeft = animationEnd - Date.now();
