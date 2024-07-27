@@ -16,6 +16,7 @@ export default async function scrapeData({
 
   return {
     funded: scrapeFunded($),
+    timeLeft: scrapeTimeLeft($),
     minAmount: scrapeAmount(getMinStartElement($)),
     minProgress: scrapeProgress(getMinStartElement($)),
     minStrokeDasharray: scrapeStrokeDasharray(getMinStartElement($)),
@@ -25,14 +26,24 @@ export default async function scrapeData({
   };
 }
 
-function scrapeFunded($: cheerio.CheerioAPI): number {
+function getFundedStartElement($: cheerio.CheerioAPI) {
   const soFarElement = $("dt:contains('Tot nu toe geïnvesteerd')");
   const totalElement = $("dt:contains('Totaal geïnvesteerd')");
-  const startElement = soFarElement.length > 0 ? soFarElement : totalElement;
+  return soFarElement.length > 0 ? soFarElement : totalElement;
+}
+
+function scrapeFunded($: cheerio.CheerioAPI): number {
+  const startElement = getFundedStartElement($);
   const fundedElement = startElement.next().children().first();
   const fundedRaw = fundedElement.text();
   const funded = parseInt(fundedRaw.replace(/[^0-9]/g, ""));
   return funded;
+}
+
+function scrapeTimeLeft($: cheerio.CheerioAPI): string {
+  const startElement = getFundedStartElement($);
+  const element = startElement.next().children().last();
+  return element.html() || "";
 }
 
 function getMinStartElement($: cheerio.CheerioAPI) {

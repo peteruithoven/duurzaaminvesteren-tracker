@@ -96,7 +96,11 @@ export default function ClientPage({ project }: { project: string }) {
 
   return (
     <>
-      <InvestedCard label="Invested so far" value={formatMoney(data.funded)} />
+      <InvestedCard
+        label="Invested so far"
+        value={formatMoney(data.funded)}
+        timeLeft={data.timeLeft}
+      />
       <ProgressCard
         strokeDasharray={data.minStrokeDasharray}
         percentage={data.minProgress}

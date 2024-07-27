@@ -1,7 +1,7 @@
 "use server";
 import { kv } from "@vercel/kv";
 import scrapeData from "../utils/scrapeData";
-import { DBData } from "../types";
+import { Data, DBData } from "../types";
 import formatPercentage from "../utils/formatPercentage";
 
 // refresh every 5 minutes
@@ -53,7 +53,7 @@ export default async function getData({ project }: { project: string }) {
   return data;
 }
 
-function getDemoData({ funded = 0 }: { funded: number }) {
+function getDemoData({ funded = 0 }: { funded: number }): Data {
   const newFunded = funded < 100000 ? funded + 100 : 0;
   const minAmount = 25000;
   const minProgress = Math.min(newFunded / minAmount, 1);
@@ -61,6 +61,8 @@ function getDemoData({ funded = 0 }: { funded: number }) {
   const targetProgress = Math.min(newFunded / targetAmount, 1);
   return {
     funded: newFunded,
+    timeLeft:
+      "Nog maximaal <strong>1 dag</strong> en <strong>7 uur</strong> om te investeren!",
     minAmount,
     minProgress: formatPercentage(minProgress),
     minStrokeDasharray: getDemoStrokeDasharray(minProgress),

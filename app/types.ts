@@ -1,5 +1,6 @@
 export type Data = {
   funded: number;
+  timeLeft: string;
   minAmount: number;
   minProgress: string;
   minStrokeDasharray: string;
