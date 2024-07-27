@@ -34,7 +34,8 @@ export default function ClientPage({ project }: { project: string }) {
     const manifestElement = document.querySelector("link[rel=manifest]");
     const manifestString = JSON.stringify({
       ...baseManifest,
-      start_url: `/p/${project}`,
+      // start_url: `/p/${project}`,
+      start_url: `/`,
     });
     manifestElement?.setAttribute(
       "href",
