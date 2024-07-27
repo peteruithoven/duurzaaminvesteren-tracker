@@ -1,7 +1,6 @@
 "use client";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import confetti from "canvas-confetti";
 import getData from "../../actions/getData";
 import useTimeout from "../../utils/useTimeout";
 import formatMoney from "../../utils/formatMoney";
@@ -12,6 +11,7 @@ import Party from "../../components/icons/Party";
 import useWakeLock from "@/app/utils/useWakeLock";
 import fireworks from "@/app/utils/fireworks";
 import CustomToast from "@/app/components/CustomToast";
+import investorConfetti from "@/app/utils/investorConfetti";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -37,15 +37,7 @@ export default function ClientPage({ project }: { project: string }) {
         <strong className="font-bold">{formatMoney(additionalFunding)}</strong>
       </CustomToast>,
     );
-    confetti({
-      disableForReducedMotion: true,
-      origin: { y: 1, x: 1 },
-      particleCount: 100,
-      spread: 90,
-      angle: 45 + 90,
-      startVelocity: 45,
-      gravity: 0.5,
-    });
+    investorConfetti();
     try {
       const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
       newBackerAudio.play();
