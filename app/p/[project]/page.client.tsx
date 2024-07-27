@@ -13,28 +13,7 @@ import fireworks from "@/app/utils/fireworks";
 import CustomToast from "@/app/components/CustomToast";
 import investorConfetti from "@/app/utils/investorConfetti";
 import Money from "@/app/components/icons/Money";
-import { MetadataRoute } from "next";
-
-const manifest: MetadataRoute.Manifest = {
-  name: "Duurzaaminvesteren.nl tracker",
-  short_name: "Duurzaaminvesteren.nl tracker",
-  description: "Keep an eye on your project on Duurzaaminvesteren.nl",
-  display: "standalone",
-  background_color: "#fff",
-  theme_color: "#f5fcf9",
-  icons: [
-    {
-      src: "/android-chrome-192x192.png",
-      sizes: "192x192",
-      type: "image/png",
-    },
-    {
-      src: "/android-chrome-512x512.png",
-      sizes: "512x512",
-      type: "image/png",
-    },
-  ],
-};
+import { baseManifest } from "@/app/manifest";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -54,7 +33,7 @@ export default function ClientPage({ project }: { project: string }) {
     if (!project) return;
     const manifestElement = document.querySelector("link[rel=manifest]");
     const manifestString = JSON.stringify({
-      ...manifest,
+      ...baseManifest,
       start_url: `/p/${project}`,
     });
     manifestElement?.setAttribute(
