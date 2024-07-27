@@ -13,6 +13,7 @@ import fireworks from "@/app/utils/fireworks";
 import CustomToast from "@/app/components/CustomToast";
 import investorConfetti from "@/app/utils/investorConfetti";
 import Money from "@/app/components/icons/Money";
+import { baseManifest } from "@/app/manifest";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -27,6 +28,21 @@ export default function ClientPage({ project }: { project: string }) {
   const targetAmount = useMemo(() => data?.targetAmount ?? 0, [data]);
 
   const isDemo = project === "demo";
+
+  useEffect(() => {
+    if (!project) return;
+    const manifestElement = document.querySelector("link[rel=manifest]");
+    const manifestString = JSON.stringify({
+      ...baseManifest,
+      // start_url: `/p/${project}`,
+      start_url: `/`,
+    });
+    manifestElement?.setAttribute(
+      "href",
+      "data:application/json;charset=utf-8," +
+        encodeURIComponent(manifestString),
+    );
+  }, [project]);
 
   useEffect(() => {
     if (funded == undefined || prevFunded == undefined) return;
