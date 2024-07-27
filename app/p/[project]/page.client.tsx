@@ -23,6 +23,7 @@ export default function ClientPage({ project }: { project: string }) {
   const funded = useMemo(() => data?.funded, [data]);
   const prevFunded = useMemo(() => prevData?.funded, [prevData]);
   const minAmount = useMemo(() => data?.minAmount ?? 0, [data]);
+  const targetAmount = useMemo(() => data?.targetAmount ?? 0, [data]);
 
   const isDemo = project === "demo";
 
@@ -54,7 +55,17 @@ export default function ClientPage({ project }: { project: string }) {
         </CustomToast>,
       );
     }
-  }, [funded, prevFunded, minAmount]);
+
+    if (prevFunded < targetAmount && funded >= targetAmount) {
+      fireworks(10 * 60 * 1000);
+      toast.custom(
+        <CustomToast>
+          <Party />
+          Target amount reached!
+        </CustomToast>,
+      );
+    }
+  }, [funded, prevFunded, minAmount, targetAmount]);
 
   useTimeout(
     async () => {
