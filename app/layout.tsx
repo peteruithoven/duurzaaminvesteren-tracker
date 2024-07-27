@@ -20,10 +20,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={[font.variable, "font-sans"].join(" ")}>
         <main className="flex min-h-screen flex-col items-center bg-green-100 p-12 text-green-700 antialiased lg:p-24">
-          <div className="shadow-3xl flex flex-wrap gap-2 rounded-lg bg-white p-4">
+          <div className="flex flex-wrap gap-2 rounded-lg bg-white p-4 shadow-3xl">
             {children}
           </div>
-          <Toaster />
+          <Toaster
+            position="bottom-right"
+            toastOptions={{
+              duration: 1000 * 60 * 60,
+            }}
+          />
         </main>
         <Analytics />
       </body>

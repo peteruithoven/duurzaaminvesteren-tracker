@@ -11,6 +11,7 @@ import { Data } from "../../types";
 import Party from "../../components/icons/Party";
 import useWakeLock from "@/app/utils/useWakeLock";
 import fireworks from "@/app/utils/fireworks";
+import CustomToast from "@/app/components/CustomToast";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -30,15 +31,11 @@ export default function ClientPage({ project }: { project: string }) {
     const additionalFunding = funded - prevFunded;
     if (additionalFunding <= 0) return;
     toast.custom(
-      <div className="flex gap-2 rounded-lg bg-green-700 p-4 text-white shadow-lg">
+      <CustomToast>
         <Party />
         New investor!
         <strong className="font-bold">{formatMoney(additionalFunding)}</strong>
-      </div>,
-      {
-        duration: 1000 * 60,
-        position: "bottom-right",
-      },
+      </CustomToast>,
     );
     confetti({
       disableForReducedMotion: true,
@@ -59,14 +56,10 @@ export default function ClientPage({ project }: { project: string }) {
     if (prevFunded < minAmount && funded >= minAmount) {
       fireworks(30 * 1000);
       toast.custom(
-        <div className="flex gap-2 rounded-lg bg-green-700 p-4 text-white shadow-lg">
+        <CustomToast>
           <Party />
           Minimum amount reached!
-        </div>,
-        {
-          duration: 1000 * 60,
-          position: "bottom-right",
-        },
+        </CustomToast>,
       );
     }
   }, [funded, prevFunded, minAmount]);
