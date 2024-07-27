@@ -89,18 +89,6 @@ export default function ClientPage({ project }: { project: string }) {
         1000 * 60,
   );
 
-  const onClick = useCallback(() => {
-    confetti({
-      disableForReducedMotion: true,
-      origin: { y: 0, x: 1 },
-      particleCount: 100,
-      spread: 90,
-      angle: 45 + 90,
-      startVelocity: 45,
-      gravity: 0.5,
-    });
-  }, []);
-
   if (!project) {
     return <div>No project specified</div>;
   }
@@ -110,7 +98,7 @@ export default function ClientPage({ project }: { project: string }) {
   }
 
   return (
-    <div onClick={onClick}>
+    <>
       <InvestedCard label="Invested so far" value={formatMoney(data.funded)} />
       <ProgressCard
         strokeDasharray={data.minStrokeDasharray}
@@ -124,6 +112,6 @@ export default function ClientPage({ project }: { project: string }) {
         label="Progress target amount"
         value={formatMoney(data.targetAmount)}
       />
-    </div>
+    </>
   );
 }
