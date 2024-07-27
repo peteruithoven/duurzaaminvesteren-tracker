@@ -12,6 +12,7 @@ import useWakeLock from "@/app/utils/useWakeLock";
 import fireworks from "@/app/utils/fireworks";
 import CustomToast from "@/app/components/CustomToast";
 import investorConfetti from "@/app/utils/investorConfetti";
+import Money from "@/app/components/icons/Money";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -33,7 +34,7 @@ export default function ClientPage({ project }: { project: string }) {
     if (additionalFunding <= 0) return;
     toast.custom(
       <CustomToast>
-        <Party />
+        <Money />
         New investor!
         <strong className="font-bold">{formatMoney(additionalFunding)}</strong>
       </CustomToast>,
