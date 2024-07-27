@@ -73,17 +73,6 @@ export default function ClientPage({ project }: { project: string }) {
         1000 * 60,
   );
 
-  useEffect(() => {
-    confetti({
-      disableForReducedMotion: true,
-      origin: { y: 1, x: 1 },
-      particleCount: 100,
-      spread: 90,
-      angle: 45 + 90,
-      startVelocity: 45,
-    });
-  }, []);
-
   if (!project) {
     return <div>No project specified</div>;
   }
