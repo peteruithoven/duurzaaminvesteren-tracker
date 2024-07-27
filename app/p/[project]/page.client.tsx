@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
 import getData from "../../actions/getData";
@@ -10,6 +10,7 @@ import ProgressCard from "../../components/ProgressCard";
 import { Data } from "../../types";
 import Party from "../../components/icons/Party";
 import useWakeLock from "@/app/utils/useWakeLock";
+import fireworks from "@/app/utils/fireworks";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -20,6 +21,7 @@ export default function ClientPage({ project }: { project: string }) {
 
   const funded = useMemo(() => data?.funded, [data]);
   const prevFunded = useMemo(() => prevData?.funded, [prevData]);
+  const minAmount = useMemo(() => data?.minAmount ?? 0, [data]);
 
   const isDemo = project === "demo";
 
@@ -53,7 +55,21 @@ export default function ClientPage({ project }: { project: string }) {
     } catch (e) {
       console.error(e);
     }
-  }, [funded, prevFunded]);
+
+    if (prevFunded < minAmount && funded >= minAmount) {
+      fireworks(30 * 1000);
+      toast.custom(
+        <div className="flex gap-2 rounded-lg bg-green-700 p-4 text-white shadow-lg">
+          <Party />
+          Minimum amount reached!
+        </div>,
+        {
+          duration: 1000 * 60,
+          position: "bottom-right",
+        },
+      );
+    }
+  }, [funded, prevFunded, minAmount]);
 
   useTimeout(
     async () => {
@@ -73,6 +89,18 @@ export default function ClientPage({ project }: { project: string }) {
         1000 * 60,
   );
 
+  const onClick = useCallback(() => {
+    confetti({
+      disableForReducedMotion: true,
+      origin: { y: 0, x: 1 },
+      particleCount: 100,
+      spread: 90,
+      angle: 45 + 90,
+      startVelocity: 45,
+      gravity: 0.5,
+    });
+  }, []);
+
   if (!project) {
     return <div>No project specified</div>;
   }
@@ -82,7 +110,7 @@ export default function ClientPage({ project }: { project: string }) {
   }
 
   return (
-    <>
+    <div onClick={onClick}>
       <InvestedCard label="Invested so far" value={formatMoney(data.funded)} />
       <ProgressCard
         strokeDasharray={data.minStrokeDasharray}
@@ -96,6 +124,6 @@ export default function ClientPage({ project }: { project: string }) {
         label="Progress target amount"
         value={formatMoney(data.targetAmount)}
       />
-    </>
+    </div>
   );
 }
