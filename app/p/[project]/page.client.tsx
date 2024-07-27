@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
+import confetti from "canvas-confetti";
 import getData from "../../actions/getData";
 import useTimeout from "../../utils/useTimeout";
 import formatMoney from "../../utils/formatMoney";
@@ -37,6 +38,15 @@ export default function ClientPage({ project }: { project: string }) {
         position: "bottom-right",
       },
     );
+    confetti({
+      disableForReducedMotion: true,
+      origin: { y: 1, x: 1 },
+      particleCount: 100,
+      spread: 90,
+      angle: 45 + 90,
+      startVelocity: 45,
+      gravity: 0.5,
+    });
     try {
       const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
       newBackerAudio.play();
@@ -62,6 +72,17 @@ export default function ClientPage({ project }: { project: string }) {
       : // refresh every 1 minute normally
         1000 * 60,
   );
+
+  useEffect(() => {
+    confetti({
+      disableForReducedMotion: true,
+      origin: { y: 1, x: 1 },
+      particleCount: 100,
+      spread: 90,
+      angle: 45 + 90,
+      startVelocity: 45,
+    });
+  }, []);
 
   if (!project) {
     return <div>No project specified</div>;
