@@ -17,7 +17,8 @@ import Money from "@/app/components/icons/Money";
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
 export default function ClientPage({ project }: { project: string }) {
-  useWakeLock();
+  const { wakeLock } = useWakeLock();
+  console.log("wakeLock: ", wakeLock);
   const [data, setData] = useState<Data | null>(null);
   const [prevData, setPrevData] = useState<Data | null>(null);
 
@@ -95,7 +96,7 @@ export default function ClientPage({ project }: { project: string }) {
   }
 
   return (
-    <>
+    <div className={"flex gap-2 " + (wakeLock ? "bg-[green]" : "bg-[red]")}>
       <InvestedCard
         label="Invested so far"
         value={formatMoney(data.funded)}
@@ -113,6 +114,6 @@ export default function ClientPage({ project }: { project: string }) {
         label="Progress target amount"
         value={formatMoney(data.targetAmount)}
       />
-    </>
+    </div>
   );
 }
