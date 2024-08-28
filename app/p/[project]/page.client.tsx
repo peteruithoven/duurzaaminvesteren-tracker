@@ -96,7 +96,8 @@ export default function ClientPage({ project }: { project: string }) {
   }
 
   return (
-    <div className={"flex gap-2 " + (wakeLock ? "bg-[green]" : "bg-[red]")}>
+    <>
+      <div className={"size-3 " + (wakeLock ? "bg-[green]" : "bg-[red]")}></div>
       <InvestedCard
         label="Invested so far"
         value={formatMoney(data.funded)}
@@ -114,6 +115,6 @@ export default function ClientPage({ project }: { project: string }) {
         label="Progress target amount"
         value={formatMoney(data.targetAmount)}
       />
-    </div>
+    </>
   );
 }
