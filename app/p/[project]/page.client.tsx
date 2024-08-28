@@ -18,7 +18,7 @@ const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
 export default function ClientPage({ project }: { project: string }) {
   const { wakeLock } = useWakeLock();
-  console.log("wakeLock: ", wakeLock);
+
   const [data, setData] = useState<Data | null>(null);
   const [prevData, setPrevData] = useState<Data | null>(null);
 

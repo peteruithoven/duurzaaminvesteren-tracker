@@ -1,13 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 
 export default function useWakeLock() {
-  console.log("useWakeLock");
   const [wakeLock, setWakeLock] = useState<WakeLockSentinel | null>(null);
-  console.log("  wakeLock: ", wakeLock);
   const requestWakeLock = useCallback(async () => {
     console.log("requestWakeLock");
     try {
       const wakeLock = await navigator.wakeLock.request("screen");
+      wakeLock.addEventListener("release", (event) => {
+        console.log("Wake Lock was released:", event);
+        setWakeLock(null);
+      });
       console.log("  wakeLock: ", wakeLock);
       setWakeLock(wakeLock);
     } catch (err) {
@@ -19,7 +21,7 @@ export default function useWakeLock() {
     console.log("visibilityChangeHandler: ");
     console.log("  document.visibilityState: ", document.visibilityState);
     console.log("  document.hidden: ", document.hidden);
-    if (wakeLock !== null && document.visibilityState === "visible") {
+    if (document.visibilityState === "visible") {
       requestWakeLock();
     }
   }, [requestWakeLock]);
