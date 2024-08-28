@@ -29,6 +29,4 @@ export default function useWakeLock() {
       document.removeEventListener("visibilitychange", visibilityChangeHandler);
     };
   }, [requestWakeLock, visibilityChangeHandler]);
-
-  return { wakeLock };
 }

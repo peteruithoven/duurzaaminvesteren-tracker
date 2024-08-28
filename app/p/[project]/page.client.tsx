@@ -17,7 +17,7 @@ import Money from "@/app/components/icons/Money";
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
 export default function ClientPage({ project }: { project: string }) {
-  const { wakeLock } = useWakeLock();
+  useWakeLock();
 
   const [data, setData] = useState<Data | null>(null);
   const [prevData, setPrevData] = useState<Data | null>(null);
@@ -97,7 +97,6 @@ export default function ClientPage({ project }: { project: string }) {
 
   return (
     <>
-      <div className={"size-3 " + (wakeLock ? "bg-[green]" : "bg-[red]")}></div>
       <InvestedCard
         label="Invested so far"
         value={formatMoney(data.funded)}
