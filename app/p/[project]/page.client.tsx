@@ -13,6 +13,7 @@ import fireworks from "@/app/utils/fireworks";
 import CustomToast from "@/app/components/CustomToast";
 import investorConfetti from "@/app/utils/investorConfetti";
 import Money from "@/app/components/icons/Money";
+import useMinimal from "@/app/utils/useMinimal";
 
 const NEW_BACKER_AUDIO = "/audio/newbacker.wav";
 
@@ -26,6 +27,7 @@ export default function ClientPage({ project }: { project: string }) {
   const prevFunded = useMemo(() => prevData?.funded, [prevData]);
   const minAmount = useMemo(() => data?.minAmount ?? 0, [data]);
   const targetAmount = useMemo(() => data?.targetAmount ?? 0, [data]);
+  const minimal = useMinimal();
 
   const isDemo = project === "demo";
 
@@ -40,7 +42,7 @@ export default function ClientPage({ project }: { project: string }) {
         <strong className="font-bold">{formatMoney(additionalFunding)}</strong>
       </CustomToast>,
     );
-    investorConfetti();
+    investorConfetti({ minimal });
     try {
       const newBackerAudio = new Audio(NEW_BACKER_AUDIO);
       newBackerAudio.play();
