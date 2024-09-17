@@ -25,7 +25,7 @@ export default function ProgressCard({
                   a 34.5 34.5 0 0 1 0 -69"
               fill="none"
               stroke="#004B46"
-              strokeWidth="6"
+              strokeWidth="5.5"
             ></path>
             <path
               d="M37.5 3
