@@ -68,7 +68,7 @@ export default function ClientPage({ project }: { project: string }) {
         </CustomToast>,
       );
     }
-  }, [funded, prevFunded, minAmount, targetAmount]);
+  }, [funded, prevFunded, minAmount, targetAmount, minimal]);
 
   useTimeout(
     async () => {
