@@ -6,8 +6,10 @@ import formatPercentage from "../utils/formatPercentage";
 
 // refresh every 5 minutes
 const REFRESH_INTERVAL = 1000 * 60 * 5;
-// refresh every 30 seconds for demo
-const REFRESH_INTERVAL_DEMO = 1000 * 30;
+// refresh every 5 minutes for demo
+const REFRESH_INTERVAL_DEMO = 1000 * 60 * 5;
+
+const localDB: Record<string, DBData> = {};
 
 function shouldRefresh({
   now,

@@ -29,8 +29,6 @@ export default function ClientPage({ project }: { project: string }) {
   const targetAmount = useMemo(() => data?.targetAmount ?? 0, [data]);
   const minimal = useMinimal();
 
-  const isDemo = project === "demo";
-
   useEffect(() => {
     if (funded == undefined || prevFunded == undefined) return;
     const additionalFunding = funded - prevFunded;
@@ -82,11 +80,8 @@ export default function ClientPage({ project }: { project: string }) {
         console.error(err);
       }
     },
-    isDemo
-      ? // refresh every 10 seconds for demo
-        1000 * 10
-      : // refresh every 1 minute normally
-        1000 * 60,
+    // refresh every 5 minutes
+    1000 * 60 * 5,
   );
 
   if (!project) {
