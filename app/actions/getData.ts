@@ -31,7 +31,11 @@ function shouldRefresh({
   return false;
 }
 
-export default async function getData({ project }: { project: string }) {
+export default async function getData({
+  project,
+}: {
+  project: string;
+}): Promise<Data> {
   if (!project) throw Error("project is required");
   console.log("getData for project: ", project);
 
@@ -62,9 +66,8 @@ export default async function getData({ project }: { project: string }) {
     localDB[project] = newDBData;
     return data;
   }
-
   console.log("  return existing data");
-  const { time, ...data } = dbData || {};
+  const { time, ...data } = dbData as DBData;
   return data;
 }
 
