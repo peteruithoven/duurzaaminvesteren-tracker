@@ -17,7 +17,7 @@ function shouldRefresh({
   isDemo,
 }: {
   now: Date;
-  dbData: DBData;
+  dbData: DBData | undefined;
   isDemo: boolean;
 }) {
   if (!dbData) return true;
@@ -36,9 +36,15 @@ export default async function getData({ project }: { project: string }) {
   console.log("getData for project: ", project);
 
   const now = new Date();
-  console.log("has localDB[project]: ", localDB[project] ? "yes" : "no");
-  const dbData = localDB[project] || ((await kv.get(project)) as DBData);
-  localDB[project] = dbData;
+  console.log("has data in localDB: ", localDB[project] ? "yes" : "no");
+  let dbData: DBData | undefined;
+  try {
+    dbData = localDB[project] || ((await kv.get(project)) as DBData);
+    localDB[project] = dbData;
+  } catch (e) {
+    console.error("kv.get error: ", e);
+  }
+
   const isDemo = project === "demo";
 
   if (shouldRefresh({ now, dbData, isDemo })) {
@@ -48,17 +54,21 @@ export default async function getData({ project }: { project: string }) {
       ...data,
       time: now.toISOString(),
     };
+    try {
+      await kv.set(project, newDBData);
+    } catch (e) {
+      console.error("kv.set error: ", e);
+    }
     localDB[project] = newDBData;
-    await kv.set(project, newDBData);
     return data;
   }
 
   console.log("  return existing data");
-  const { time, ...data } = dbData;
+  const { time, ...data } = dbData || {};
   return data;
 }
 
-function getDemoData({ funded = 0 }: { funded: number }): Data {
+function getDemoData({ funded = 0 }: { funded?: number } = {}): Data {
   const newFunded = funded < 100000 ? funded + 100 : 0;
   const minAmount = 25000;
   const minProgress = Math.min(newFunded / minAmount, 1);
