@@ -36,7 +36,9 @@ export default async function getData({ project }: { project: string }) {
   console.log("getData for project: ", project);
 
   const now = new Date();
-  const dbData = (await kv.get(project)) as DBData;
+  console.log("has localDB[project]: ", localDB[project] ? "yes" : "no");
+  const dbData = localDB[project] || ((await kv.get(project)) as DBData);
+  localDB[project] = dbData;
   const isDemo = project === "demo";
 
   if (shouldRefresh({ now, dbData, isDemo })) {
@@ -46,6 +48,7 @@ export default async function getData({ project }: { project: string }) {
       ...data,
       time: now.toISOString(),
     };
+    localDB[project] = newDBData;
     await kv.set(project, newDBData);
     return data;
   }
