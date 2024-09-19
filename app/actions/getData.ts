@@ -9,7 +9,7 @@ const REFRESH_INTERVAL = 1000 * 60 * 5;
 // refresh every 5 minutes for demo
 const REFRESH_INTERVAL_DEMO = 1000 * 60 * 5;
 
-// const localDB: Record<string, DBData> = {};
+const localDB: Record<string, DBData> = {};
 
 function shouldRefresh({
   now,
@@ -41,8 +41,8 @@ export default async function getData({ project }: { project: string }) {
   // console.log("has localDB[project]: ", localDB[project] ? "yes" : "no");
   // const dbData = localDB[project] || ((await kv.get(project)) as DBData);
   // @ts-ignore
-  const dbData = (await redis.hGetAll(project)) as DBData;
-  // localDB[project] = dbData;
+  const dbData = localDB[project] || ((await redis.hGetAll(project)) as DBData);
+  localDB[project] = dbData;
   const isDemo = project === "demo";
 
   if (shouldRefresh({ now, dbData, isDemo })) {
@@ -52,7 +52,7 @@ export default async function getData({ project }: { project: string }) {
       ...data,
       time: now.toISOString(),
     };
-    // localDB[project] = newDBData;
+    localDB[project] = newDBData;
     // await kv.set(project, newDBData);
     await redis.hSet(project, newDBData);
     return data;
