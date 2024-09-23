@@ -10,8 +10,10 @@ console.log("HISTORY_PROJECT: ", HISTORY_PROJECT);
 export async function GET() {
   if (!HISTORY_PROJECT) return;
   const data = await scrapeData({ project: HISTORY_PROJECT });
+
   const { funded } = data;
   console.log("funded: ", funded);
   await sql`INSERT INTO history (timestamp, funded) VALUES (NOW(), ${funded});`;
   return new Response(`Recorded ${funded} at ${new Date()}`);
 }
+//
