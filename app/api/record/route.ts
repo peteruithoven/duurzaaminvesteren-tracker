@@ -9,11 +9,13 @@ console.log("HISTORY_PROJECT: ", HISTORY_PROJECT);
 
 export async function GET() {
   if (!HISTORY_PROJECT) return;
+  // Add caching layer...
   const data = await scrapeData({ project: HISTORY_PROJECT });
 
   const { funded } = data;
   console.log("funded: ", funded);
   await sql`INSERT INTO history (timestamp, funded) VALUES (NOW(), ${funded});`;
+  console.log("`Recorded ${funded} at ${new Date()}`");
   return new Response(`Recorded ${funded} at ${new Date()}`);
 }
 //
