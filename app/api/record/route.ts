@@ -16,8 +16,7 @@ export async function GET() {
   console.log("funded: ", funded);
   await sql`INSERT INTO history (timestamp, funded) VALUES (NOW(), ${funded});`;
   console.log(`Recorded ${funded} at ${new Date()}`);
-  const response = await sql`SELECT COUNT(*) AS row_count
-FROM history;`;
+  const response = await sql`SELECT COUNT(*) AS row_count FROM history;`;
   console.log("count response: ", response);
   return new Response(`Recorded ${funded} at ${new Date()}`);
 }
