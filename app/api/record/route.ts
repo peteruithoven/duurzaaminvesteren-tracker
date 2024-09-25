@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
-import scrapeData from "@/app/utils/scrapeData";
-export const dynamic = "force-dynamic";
+import getData from "@/app/actions/getData";
 
+export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const revalidate = 0;
 
@@ -10,8 +10,7 @@ console.log("project: ", project);
 
 export async function GET() {
   if (!project) return;
-  // TODO Add caching layer...
-  const data = await scrapeData({ project });
+  const data = await getData({ project });
   const { funded } = data;
 
   const result =
