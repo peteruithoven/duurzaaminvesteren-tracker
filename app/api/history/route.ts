@@ -1,3 +1,4 @@
+import getHistory from "@/app/actions/getHistory";
 import toCsv from "@/app/utils/toCsv";
 import { sql } from "@vercel/postgres";
 
@@ -15,13 +16,10 @@ export async function GET(request: Request) {
   }
 
   try {
-    const response =
-      await sql`SELECT * FROM history WHERE project = ${project};`;
-
-    const data = response.rows;
+    const data = await getHistory(project);
 
     if (type === "csv") {
-      const csvData = await toCsv(response.rows);
+      const csvData = await toCsv(data);
       return new Response(csvData, {
         headers: {
           "Content-Type": "text/csv",
