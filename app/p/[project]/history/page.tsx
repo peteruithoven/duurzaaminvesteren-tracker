@@ -8,6 +8,7 @@ export default async function Page({
 }: {
   params: { project: string };
 }) {
+  console.log("HistoryPage");
   const data = await getHistory(params.project);
 
   return <ClientPage data={data} />;

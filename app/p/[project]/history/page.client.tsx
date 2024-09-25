@@ -21,6 +21,7 @@ ChartJS.register(
 );
 
 export default function ClientPage({ data }: { data: HistoryItem[] }) {
+  console.log("ClientPage: ", ClientPage);
   // Extracting timestamps and funded amounts
   const timestamps = data.map((item) => new Date(item.timestamp)); // Directly use date objects
   const fundedAmounts = data.map((item) => item.funded);
