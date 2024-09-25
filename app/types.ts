@@ -12,3 +12,10 @@ export type Data = {
 export type DBData = Data & {
   time: string;
 };
+
+export type HistoryItem = {
+  id: number;
+  project: string;
+  funded: number;
+  timestamp: string;
+};
