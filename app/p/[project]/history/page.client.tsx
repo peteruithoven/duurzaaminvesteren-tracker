@@ -42,9 +42,9 @@ export default function ClientPage({ data }: { data: HistoryItem[] }) {
         type: "time",
         time: {
           unit: "day", // Adjust the unit as per your requirement (minute, hour, day, etc.)
-          tooltipFormat: "yyyy-mm-dd hh:mm",
+          tooltipFormat: "yyyy-MM-dd hh:mm",
           displayFormats: {
-            minute: "mm-dd hh:mm",
+            minute: "MM-dd hh:mm",
           },
         },
         title: {
