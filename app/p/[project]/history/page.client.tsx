@@ -32,6 +32,11 @@ export default function ClientPage({ data }: { data: HistoryItem[] }) {
       intersect: false,
       mode: "x",
     },
+    elements: {
+      point: {
+        radius: 0,
+      },
+    },
     scales: {
       x: {
         type: "time",
@@ -65,10 +70,6 @@ export default function ClientPage({ data }: { data: HistoryItem[] }) {
         fill: false,
         borderColor: "rgb(80 205 180)",
         tension: 0.1,
-        backgroundColor: "rgb(80 205 180)",
-        pointStyle: "circle",
-        pointRadius: 2,
-        pointHoverRadius: 5,
       },
     ],
   };
