@@ -41,7 +41,7 @@ export default function ClientPage({ data }: { data: HistoryItem[] }) {
       x: {
         type: "time",
         time: {
-          unit: "hour", // Adjust the unit as per your requirement (minute, hour, day, etc.)
+          unit: "day", // Adjust the unit as per your requirement (minute, hour, day, etc.)
           tooltipFormat: "yyyy-mm-dd hh:mm",
           displayFormats: {
             minute: "mm-dd hh:mm",
